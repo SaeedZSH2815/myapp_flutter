@@ -3,6 +3,7 @@ import 'package:myapp_flutter/screens/bookmark_screen.dart';
 import 'package:myapp_flutter/screens/home_screen.dart';
 import 'package:myapp_flutter/utils/my_utils.dart';
 import 'package:myapp_flutter/utils/widgets/bottom_nav/my_bottom_nav_bar.dart';
+import '../models/products.dart';
 
 class MainWrapper extends StatefulWidget {
   MainWrapper({super.key});
@@ -19,8 +20,10 @@ class _MainWrapperState extends State<MainWrapper> {
 
   Widget build(BuildContext context) {
     List<Widget> listWidget = [
-       HomeScreen(),
-      const BookmarkScreen(),
+      HomeScreen(),
+      BookmarkScreen(
+        items: pitems,
+      ),
     ];
 
     var maxHeight = MediaQuery.of(context).size.height;
