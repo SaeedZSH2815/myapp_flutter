@@ -11,15 +11,38 @@ class MyListViewInfinte extends StatefulWidget {
 }
 
 class _MyListViewInfinteState extends State<MyListViewInfinte> {
-  List<String> items = ['Item 1', 'Item 2', 'Item 3'];
+  List<String> items = [];
+  final ctrl = ScrollController();
+  int page = 1;
+  bool hasMore = true;
+
+  @override
+  void initState() {
+    super.initState();
+    refresh();
+    ctrl.addListener(() {
+      if (ctrl.position.maxScrollExtent == ctrl.offset) refresh();
+    });
+  }
 
   Future refresh() async {
-    final http.Response r =
-        await http.get(Uri.parse("http://127.0.0.1:8000/home/alltodo_apiView"));
+    // setState(() {
+    //   items.clear();
+    // });
+    final limit = 25;
+    final http.Response r = await http.get(Uri.parse(
+        "http://jsonplaceholder.typicode.com/posts?_page=$page&_limit=25"));
     if (r.statusCode == 200) {
-      final List itemList = json.decode(r.body);
+      final List newitems = json.decode(r.body);
       setState(() {
-        items = ['Item 4', 'Item 5', 'Item 6'];
+        page++;
+        if (newitems.length < 25) hasMore = false;
+        items.addAll(newitems.map<String>(
+          (e) {
+            final num = e['id'];
+            return 'Item_$num';
+          },
+        ));
       });
     }
   }
@@ -28,21 +51,35 @@ class _MyListViewInfinteState extends State<MyListViewInfinte> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("ListView.builder")),
-      body: RefreshIndicator(
-        onRefresh: refresh,
-        child: ListView.builder(
-            itemCount: items.length,
-            itemBuilder: (BuildContext context, int index) {
-              final String item = items[index];
-              return ListTile(
-                  leading: const Icon(Icons.list),
-                  trailing: const Text(
-                    "GFG",
-                    style: TextStyle(color: Colors.green, fontSize: 15),
-                  ),
-                  title: Text(item));
-            }),
-      ),
+      body: items.isEmpty
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : RefreshIndicator(
+              onRefresh: refresh,
+              child: ListView.builder(
+                  controller: ctrl,
+                  itemCount: items.length + 1,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (index < items.length) {
+                      final String item = items[index];
+                      return ListTile(
+                          leading: const Icon(Icons.list),
+                          trailing: const Text(
+                            "GFG",
+                            style: TextStyle(color: Colors.green, fontSize: 15),
+                          ),
+                          title: Text(item));
+                    } else {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: 32),
+                        child: hasMore
+                            ? CircularProgressIndicator()
+                            : Text("no Data"),
+                      );
+                    }
+                  }),
+            ),
     );
   }
 }

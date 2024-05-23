@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:myapp_flutter/screens/listview_infinte_builder.dart';
 import 'package:myapp_flutter/screens/main_warpper.dart';
+import './utils/my_utils.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,8 +20,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      //home: MainWrapper(),
-      home: MyListViewInfinte(),
+      home: MainWrapper(),
+      //home: MyListViewInfinte(),
     );
   }
 }
@@ -44,6 +46,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  String _counterstr = MyString.p;
 
   void _incrementCounter() {
     setState(() {

@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 
+extension MyString on String {
+  static String p = 'MyString';
+  int toInt_() {
+    return int.parse(this);
+  }
+}
+
 class MyApp {
   void showSnakBarMsg(BuildContext clCtx, String clMsg,
       {int clDurationMillSec = 2}) {
@@ -49,4 +56,34 @@ class MyApp {
     );
     return returnValue;
   }
+
+  Human y = Human("2", "name");
+}
+
+abstract class H {
+  int f(int a) {
+    return a;
+    //print("object");
+  }
+}
+
+class H1 extends H {}
+
+class H2 implements H {
+  @override
+  int f(int a) {
+    return a;
+  }
+}
+
+///gfghgfhg:|saeed|
+class Human {
+  final String id;
+  final String name;
+  Human(this.id, this.name);
+  Human.persion(this.id) : name = "";
+}
+
+extension HumanEtn on Human {
+  String get getid => "${id}lll";
 }

@@ -9,7 +9,11 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(children: [Text('Home Screen'), Expanded(child: p)]),
+      child: Column(children: [
+        Text('Home Screen'),
+        for (var i = 0; i < 2; i++) Text('Home Screen'),
+        Expanded(child: p)
+      ]),
     );
   }
 }
